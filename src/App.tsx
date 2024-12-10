@@ -1,8 +1,13 @@
+import Canvas from "./Canvas";
+import "./index.css";
+
 const App = () => {
   return (
-    <div>
-      Hello World
-    </div>
-  )
-}
-export default App
+    <>
+      <div className="w-full bg-black text-white min-h-screen">
+        <Canvas />
+      </div>
+    </>
+  );
+};
+export default App;
