@@ -1,15 +1,32 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import canvasImages from "./canvasimages";
 
 const Canvas = () => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
   useEffect(() => {
-    console.log(canvasImages);
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        const img = new Image();
+        img.src = canvasImages[0];
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+        };
+      }
+    }
   }, []);
 
   return (
     <div>
-      Canvas
-      <canvas id="canvas"></canvas>
+      <canvas
+        id="canvas"
+        ref={canvasRef}
+        className="w-[18rem] h-[18rem]"
+      ></canvas>
     </div>
   );
 };
