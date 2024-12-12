@@ -1,8 +1,23 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import canvasImages from "./canvasimages";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const Canvas = () => {
+  const [index, setIndex] = useState({ value: 0 });
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useGSAP(() => {
+    gsap.to(index, {
+      value: 150,
+      duration: 3,
+      repeat: -1,
+      ease: "linear",
+      onUpdate: () => {
+        setIndex({ value: Math.round(index.value) });
+      },
+    });
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -10,7 +25,7 @@ const Canvas = () => {
       const ctx = canvas.getContext("2d");
       if (ctx) {
         const img = new Image();
-        img.src = canvasImages[0];
+        img.src = canvasImages[index.value];
         img.onload = () => {
           canvas.width = img.width;
           canvas.height = img.height;
@@ -18,7 +33,7 @@ const Canvas = () => {
         };
       }
     }
-  }, []);
+  }, [index]);
 
   return (
     <div>
